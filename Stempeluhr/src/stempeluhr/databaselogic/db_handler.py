@@ -9,13 +9,17 @@ class DatabaseHandler:
         # Speicherort im Projektverzeichnis
         current_dir = os.path.dirname(os.path.abspath(__file__))
         project_root = os.path.dirname(os.path.dirname(current_dir))
-        self.db_path = os.path.join(project_root, 'data', 'stempeluhr.db')
+        self.db_path = os.path.join(project_root, 'database', 'stempeluhr.db')
         
-        # Stelle sicher, dass das data Verzeichnis existiert
+        # Stelle sicher, dass das database Verzeichnis existiert
         os.makedirs(os.path.dirname(self.db_path), exist_ok=True)
         
         self.conn = sqlite3.connect(self.db_path)
         self.init_db()
+
+    def __del__(self):
+        if hasattr(self, 'conn'):
+            self.conn.close()
 
     def init_db(self):
         cursor = self.conn.cursor()
@@ -43,3 +47,9 @@ class DatabaseHandler:
         cursor.execute('SELECT * FROM stempel ORDER BY date DESC, time DESC')
         rows = cursor.fetchall()
         return [TimeEntry(*row) for row in rows]
+
+    def get_last_entry(self):
+        cursor = self.conn.cursor()
+        cursor.execute('SELECT * FROM stempel ORDER BY date DESC, time DESC LIMIT 1')
+        row = cursor.fetchone()
+        return TimeEntry(*row) if row else None
