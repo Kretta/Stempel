@@ -1,0 +1,45 @@
+@startuml Stempeluhr Use Cases
+
+left to right direction
+
+actor "Mitarbeiter" as employee
+actor "System" as system
+
+rectangle "Stempeluhr" {
+    ' Hauptfunktionen
+    usecase "Kommen" as clock_in
+    usecase "Gehen" as clock_out
+    usecase "Pause anfangen" as pause_start
+    usecase "Pause beenden" as pause_end
+    
+    ' Datenverwaltung
+    usecase "Einträge speichern" as save_entries
+    usecase "Historie anzeigen" as show_history
+    usecase "Status wiederherstellen" as restore_state
+    
+    ' Benutzerverwaltung
+    usecase "Benutzerdaten eingeben" as enter_user_data
+    usecase "Letzten Benutzer speichern" as save_last_user
+}
+
+' Beziehungen Mitarbeiter
+employee --> clock_in
+employee --> clock_out
+employee --> pause_start
+employee --> pause_end
+employee --> enter_user_data
+
+' Beziehungen System
+system --> save_entries
+system --> show_history
+system --> restore_state
+system --> save_last_user
+
+' Abhängigkeiten
+clock_in ..> save_entries : <<include>>
+clock_out ..> save_entries : <<include>>
+pause_start ..> save_entries : <<include>>
+pause_end ..> save_entries : <<include>>
+enter_user_data ..> save_last_user : <<include>>
+
+@enduml 
