@@ -2,7 +2,7 @@ import toga
 from toga.style import Pack
 from toga.style.pack import COLUMN
 from .components.stempeluhr_element import StempelUhrElement
-from .functions.database import DatabaseHandler
+from .databaselogic.db_handler import DatabaseHandler
 import logging
 import asyncio
 

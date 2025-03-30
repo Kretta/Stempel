@@ -37,13 +37,12 @@ def handle_pause_start(vorname: str, nachname: str, window) -> bool:
     db_handler.save_entry(entry)
     return True
 
-def handle_pause_end(vorname: str, nachname: str, pause_duration: int, window) -> bool:
+def handle_pause_end(vorname: str, nachname: str, window) -> bool:
     current_datetime = datetime.now()
     date = current_datetime.strftime('%Y-%m-%d')
     time = current_datetime.strftime('%H:%M:%S')
 
-    status = f'Pause Ende ({pause_duration} Min.)' if pause_duration else 'Pause Ende (Dauer unbekannt)'
-    entry = TimeEntry(vorname, nachname, date, time, status)
+    entry = TimeEntry(vorname, nachname, date, time, 'Pause Ende')
     db_handler = DatabaseHandler()
     db_handler.save_entry(entry)
     return True 
